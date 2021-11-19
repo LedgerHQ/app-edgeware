@@ -129,6 +129,12 @@ target_include_directories(app_lib PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/app/src/common
         )
 
+string(APPEND CMAKE_C_FLAGS   " -include /usr/include/bsd/string.h")
+string(APPEND CMAKE_CXX_FLAGS " -include /usr/include/bsd/string.h")
+target_link_libraries(app_lib PRIVATE
+        bsd
+        )
+
 ##############################################################
 ##############################################################
 #  Tests
