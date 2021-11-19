@@ -422,15 +422,14 @@ parser_error_t _toStringBalance(
     }
 
     number_inplace_trimming(bufferUI, 1);
-    size_t size = strlen(bufferUI) + strlen(COIN_TICKER) + 2;
     char _tmpBuffer[200];
     MEMZERO(_tmpBuffer, sizeof(_tmpBuffer));
-    strcat(_tmpBuffer, COIN_TICKER);
-    strcat(_tmpBuffer, " ");
-    strcat(_tmpBuffer, bufferUI);
+    strlcat(_tmpBuffer, COIN_TICKER, sizeof(_tmpBuffer));
+    strlcat(_tmpBuffer, " ", sizeof(_tmpBuffer));
+    strlcat(_tmpBuffer, bufferUI, sizeof(_tmpBuffer));
     // print length: strlen(value) + strlen(COIN_TICKER) + strlen(" ") + nullChar
     MEMZERO(bufferUI, sizeof(bufferUI));
-    snprintf(bufferUI, size, "%s", _tmpBuffer);
+    snprintf(bufferUI, sizeof(bufferUI), "%s", _tmpBuffer);
 
     pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
     return parser_ok;
@@ -528,7 +527,8 @@ parser_error_t _toStringTupleDataData(
         CHECK_ERROR(_toStringData(&v->data2, outValue, outValueLen, pageIdx, &pages[1]))
         return parser_ok;
     }
-    pageIdx -= pages[1];
+    // never readed
+    // pageIdx -= pages[1];
 
     return parser_display_idx_out_of_range;
 }
