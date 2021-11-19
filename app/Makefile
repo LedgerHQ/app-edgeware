@@ -95,7 +95,7 @@ endef
 $(error "$(error_message)")
 endif
 
-APP_LOAD_PARAMS = --appFlags 0x200 --delete $(COMMON_LOAD_PARAMS) --path $(APPPATH)
+APP_LOAD_PARAMS = --appFlags 0x200 --delete $(COMMON_LOAD_PARAMS) --path $(APPPATH) --curve ed25519
 
 # Pending review parameters
 APP_LOAD_PARAMS += --tlvraw 9F:01
