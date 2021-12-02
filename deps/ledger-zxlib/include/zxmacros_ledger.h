@@ -28,10 +28,10 @@
     #define NV_VOLATILE volatile
     #define IS_UX_ALLOWED (G_ux_params.len != BOLOS_UX_IGNORE && G_ux_params.len != BOLOS_UX_CONTINUE)
 
-    #define MEMMOVE os_memmove
-    #define MEMSET os_memset
-    #define MEMCPY os_memcpy
-    #define MEMCMP os_memcmp
+    #define MEMMOVE memmove
+    #define MEMSET memset
+    #define MEMCPY memcpy
+    #define MEMCMP memcmp
     #define MEMZERO explicit_bzero
 #else
     #include "os_io_seproxyhal.h"
