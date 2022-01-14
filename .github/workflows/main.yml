@@ -22,6 +22,7 @@ jobs:
           sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
           make deps
           brew install conan
+          sudo apt install libbsd-dev
       - run: cmake -DCMAKE_BUILD_TYPE=Debug . && make
       - run: GTEST_COLOR=1 ASAN_OPTIONS=detect_leaks=0 ctest -VV
 
@@ -160,6 +161,8 @@ jobs:
     steps:
       - name: Clone
         uses: actions/checkout@v2
+        with:
+          submodules: true
 
       - name: Build
         run: |
@@ -179,7 +182,10 @@ jobs:
       image: ghcr.io/ledgerhq/ledger-app-builder/ledger-app-builder:latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Clone
+        uses: actions/checkout@v2
+        with:
+          submodules: true
 
       - name: Build with Clang Static Analyzer
         run: |
@@ -203,6 +209,8 @@ jobs:
     steps:
       - name: Clone
         uses: actions/checkout@v2
+        with:
+          submodules: true
 
       - name: Install build deps
         run: pip3 install conan

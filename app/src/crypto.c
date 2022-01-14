@@ -99,18 +99,33 @@ cx_err_t gen_ed25519_private_key(cx_ecfp_private_key_t* pPrivateKey, const unsig
     cx_err_t ret;
     uint8_t privateKeyData[SK_LEN_25519];
 
-    os_perso_derive_node_bip32_seed_key(
-            HDW_NORMAL,
-            CX_CURVE_Ed25519,
-            path,
-            HDPATH_LEN_DEFAULT,
-            privateKeyData,
-            NULL,
-            NULL,
-            0);
+    BEGIN_TRY
+    {
+        TRY
+        {
+            os_perso_derive_node_bip32_seed_key(
+                    HDW_NORMAL,
+                    CX_CURVE_Ed25519,
+                    path,
+                    HDPATH_LEN_DEFAULT,
+                    privateKeyData,
+                    NULL,
+                    NULL,
+                    0);
+        }
+        CATCH_ALL
+        {
+            CLOSE_TRY;
+            // nothing to do, failed to initialize the key
+            return CX_INTERNAL_ERROR;
+        }
+        FINALLY
+        { }
+    }
+    END_TRY;
 
     ret = cx_ecfp_init_private_key_no_throw(CX_CURVE_Ed25519, privateKeyData, SCALAR_LEN_ED25519, pPrivateKey);
-    explicit_bzero(privateKeyData, sizeof(privateKeyData));
+    MEMZERO(privateKeyData, sizeof(privateKeyData));
     return ret;
 }
 
@@ -127,7 +142,7 @@ cx_err_t gen_ed25519_public_key(cx_ecfp_public_key_t* pPublicKey, const unsigned
     if (ret == CX_OK) {
         ret = cx_ecfp_generate_pair_no_throw(CX_CURVE_Ed25519, pPublicKey, &privateKey, 1);
     }
-    explicit_bzero(&privateKey, sizeof(privateKey));
+    MEMZERO(&privateKey, sizeof(privateKey));
     return ret;
 }
 
